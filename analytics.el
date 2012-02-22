@@ -111,3 +111,5 @@
   (stop-analytics-timers)
   (send-keystrokes))
 (enable-analytics)
+
+(provide 'analytics)
