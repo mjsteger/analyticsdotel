@@ -53,7 +53,6 @@
   (setq last-key this-command)
   (add-keystroke last-key))
 
-
 (defun analytics-add-hooks ()
   (add-hook 'post-command-hook 'analytics-post-command-hook)
   (add-hook 'kill-emacs-hook 'send-keystrokes))
@@ -76,13 +75,16 @@
      	(setcdr key-cell (+ 1 (cdr key-cell)))
        (setq *functions-count (cons (cons key-pressed 1) *functions-count)))))
 
-(defun add-keystroke-markov (key-pressed last-key)
+(defun add-keystroke-markov (last-key key-pressed)
   (let ((key-cell (assoc last-key (assoc key-pressed *keystroke-markov-count)))
 	(key-cell-general (assoc key-pressed *keystroke-markov-count)))
     (if (equal key-cell-general nil)
 	(setq *keystroke-markov-count (cons (list key-pressed (list last-key 1)) *keystroke-markov-count))
+      (print "yay,the last key is ")(print last-key)
+      (print "yay,the key-pressed is ")(print key-pressed )
       (if (equal key-cell nil)
-	  (setcdr key-cell-general (list (cadr key-cell-general) (list last-key 1)))
+	  (progn
+	    (setcdr key-cell-general (cons (list last-key 1) (cdr key-cell-general))))
 	(setcdr key-cell (list(+ 1 (cadr key-cell))))
 	))))
 
